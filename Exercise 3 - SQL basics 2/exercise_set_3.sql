@@ -8,13 +8,13 @@ SELECT ROUND(AVG(price), 1) AS price_average FROM products WHERE categoryID IN (
 -- ##################################################
 -- 2 | Count how many products in orders have a quantity of 50 or more (all occurrences should be counted!). Use column name fifty_or_over.
 -- --------------------------------------------------
-
+SELECT COUNT(*) AS fifty_or_over FROM ( SELECT ProductID, SUM(Quantity) AS total_quantity FROM orderdetails GROUP BY ProductID HAVING SUM(Quantity) >= 50 ) AS subquery;
 -- --------------------------------------------------
 
 -- ##################################################
 -- 3 | Count the sum for quantity values of orders in orderID range of 10250-10350? Use column name total_quantity.
 -- --------------------------------------------------
-
+SELECT SUM(Quantity) AS total_quantity FROM orderdetails WHERE OrderID BETWEEN 10250 AND 10350;
 -- --------------------------------------------------
 
 -- ##################################################

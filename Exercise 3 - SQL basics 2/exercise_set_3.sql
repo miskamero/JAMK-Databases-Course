@@ -18,21 +18,24 @@ SELECT SUM(Quantity) AS total_quantity FROM orderdetails WHERE OrderID BETWEEN 1
 -- --------------------------------------------------
 
 -- ##################################################
--- 4 | Calculate how many suppliers operate in each country. Show country and count of suppliers in the result set. Use the column name of suppliers_in_country for the count column. Order the result set by count value in descending order.
+-- 4 | Calculate how many suppliers operate in each country. Show country and count of suppliers in the result set. Use the column name of suppliers_in_country for the count column.
+-- Order the result set by count value in descending order.
 -- --------------------------------------------------
-
--- --------------------------------------------------
-
--- ##################################################
--- 5 | Calculate the average price for the products in each categoryID. Present calculation with two decimals. Include only categories with average price in range 20-30. Use column name price_averages and present also categoryID in the result set. Order results by calculated average price in descending order.
--- --------------------------------------------------
-
+SELECT Country, COUNT(*) AS suppliers_in_country FROM suppliers GROUP BY Country ORDER BY suppliers_in_country DESC;
 -- --------------------------------------------------
 
 -- ##################################################
--- 6 | Create new usernames for employees using string functions. Username should include first three letters from firstname, first two letters from lastname and year from the birthdate of employee. Present username using lowercase letters. Use column name username.
+-- 5 | Calculate the average price for the products in each categoryID. Present calculation with two decimals. Include only categories with average price in range 20-30.
+-- Use column name price_averages and present also categoryID in the result set. Order results by calculated average price in descending order.
+-- --------------------------------------------------
+SELECT CategoryID, ROUND(AVG(Price), 2) AS price_averages FROM products GROUP BY CategoryID HAVING price_averages BETWEEN 20 AND 30 ORDER BY price_averages DESC;
 -- --------------------------------------------------
 
+-- ##################################################
+-- 6 | Create new usernames for employees using string functions. Username should include first three letters from firstname, first two letters from lastname and year from the birthdate of employee.
+-- Present username using lowercase letters. Use column name username.
+-- --------------------------------------------------
+SELECT LOWER(CONCAT(SUBSTRING(FirstName, 1, 3), SUBSTRING(LastName, 1, 2), YEAR(BirthDate))) AS username FROM employees;
 -- --------------------------------------------------
 
 -- ##################################################
@@ -41,15 +44,17 @@ SELECT SUM(Quantity) AS total_quantity FROM orderdetails WHERE OrderID BETWEEN 1
 -- 	- Units as bottle -> Category_B
 -- 	- Units as jar -> Category_C
 -- 	- In any other case -> Category_D
--- Use column name unit_categorisation for the categorisation column. In addition to categorisation column, product name and unit should be included in the result set. Order the results by categorisation column in ascending order.
+-- Use column name unit_categorisation for the categorisation column. In addition to categorisation column, product name and unit should be included in the result set.
+-- Order the results by categorisation column in ascending order.
 -- --------------------------------------------------
-
+SELECT ProductName, Unit, CASE Unit WHEN 'Box' THEN 'Category_A' WHEN 'Bottle' THEN 'Category_B' WHEN 'Jar' THEN 'Category_C' ELSE 'Category_D' END AS unit_categorisation FROM products ORDER BY unit_categorisation ASC;
 -- --------------------------------------------------
 
 -- ##################################################
--- 8 | Count the length of employees firstname and lastname (both together, for example JanetLeverling -> 14). Use column name name_length. Show only employees with name length over 12 characters. In addition to name_length, show firstname and lastname in the result set.
+-- 8 | Count the length of employees firstname and lastname (both together, for example JanetLeverling -> 14). Use column name name_length.
+-- Show only employees with name length over 12 characters. In addition to name_length, show firstname and lastname in the result set.
 -- --------------------------------------------------
-
+SELECT LENGTH(CONCAT(FirstName, LastName)) AS name_length, FirstName, LastName FROM employees WHERE LENGTH(CONCAT(FirstName, LastName)) > 12;
 -- --------------------------------------------------
 
 -- ##################################################

@@ -64,7 +64,7 @@ SELECT LENGTH(CONCAT(FirstName, LastName)) AS name_length, FirstName, LastName F
 -- 	- If both are missing, phone number is considered to be invalid
 -- Use the name phone_number_check for the categorisation column. In addition to phone number categorisation column present supplier name, contact name and phone number in the result set.
 -- --------------------------------------------------
-
+SELECT SupplierName, ContactName, Phone, CASE WHEN Phone LIKE '%(%' AND Phone LIKE '%-%' THEN 'valid' WHEN Phone LIKE '%(%' OR Phone LIKE '%-%' THEN 'partly valid' ELSE 'invalid' END AS phone_number_check FROM suppliers;
 -- --------------------------------------------------
 
 -- ##################################################
@@ -73,5 +73,5 @@ SELECT LENGTH(CONCAT(FirstName, LastName)) AS name_length, FirstName, LastName F
 -- 	- All quantities in total for each order (use column name total_quantity)
 -- Show only orders having at least three different products (three different productid:s required). In addition to the aforementioned columns include orderid in the result set. Order the result set in descending order by total quantity of the order.
 -- --------------------------------------------------
-
+SELECT OrderID, COUNT(DISTINCT ProductID) AS products_in_order, SUM(Quantity) AS total_quantity FROM orderdetails GROUP BY OrderID HAVING products_in_order >= 3 ORDER BY total_quantity DESC;
 -- --------------------------------------------------

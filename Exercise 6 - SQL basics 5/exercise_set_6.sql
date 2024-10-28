@@ -19,7 +19,13 @@ VALUES (1, 'Saint Louis', 'Palm st 16', 63107, 'Saint Louis'),
 -- 	- Quincy warehouse (address: 3100 Payson Rd, postalcode: 62305, city: Quincy, surfacearea: 280m2, supplier: Tropical Fruits)
 -- 	- Cameron warehouse (address: 650 E Grand Ave, postalcode: 64429, city: Cameron, surfacearea: 310m2, supplier: Bigfoot Breweries)
 -- --------------------------------------------------
-
+INSERT INTO warehouses (WarehouseID, Address, PostalCode, City, SurfaceArea, SupplierID)
+VALUES 
+    (1, 'Grant Ave 400', '64068', 'Liberty', 200, (SELECT SupplierID FROM suppliers WHERE SupplierName = 'New Orleans Cajun Delights')),
+    (2, '1030 SE Forest Ridge Ct', '64014', 'Blue Springs', 350, (SELECT SupplierID FROM suppliers WHERE SupplierName = 'Tasty Roots')),
+    (3, '800 W Champain St', '65026', 'Eldon', 400, (SELECT SupplierID FROM suppliers WHERE SupplierName = 'New Orleans Cajun Delights')),
+    (4, '3100 Payson Rd', '62305', 'Quincy', 280, (SELECT SupplierID FROM suppliers WHERE SupplierName = 'Tropical Fruits')),
+    (5, '650 E Grand Ave', '64429', 'Cameron', 310, (SELECT SupplierID FROM suppliers WHERE SupplierName = 'Bigfoot Breweries'));
 -- --------------------------------------------------
 
 -- ##################################################
@@ -34,7 +40,23 @@ VALUES (1, 'Saint Louis', 'Palm st 16', 63107, 'Saint Louis'),
 -- 		* product: Sun-Dried Tomatoes, quantity: 95000, shelf: A1
 -- 		* product: Almond Milk, quantity: 15000, shelf: Q7
 -- --------------------------------------------------
+INSERT INTO storages (ProductID, WarehouseID, Quantity, Shelf)
+VALUES 
+    ((SELECT ProductID FROM products WHERE ProductName = 'Chang'), (SELECT WarehouseID FROM warehouses WHERE Address = 'Grant Ave 400'), 16000, 'A7'),
+    ((SELECT ProductID FROM products WHERE ProductName = 'Tofu'), (SELECT WarehouseID FROM warehouses WHERE Address = 'Grant Ave 400'), 12000, 'T8'),
+    ((SELECT ProductID FROM products WHERE ProductName = 'Maxilaku'), (SELECT WarehouseID FROM warehouses WHERE Address = '1030 SE Forest Ridge Ct'), 50000, 'B5'),
+    ((SELECT ProductID FROM products WHERE ProductName = 'Ipoh Coffee'), (SELECT WarehouseID FROM warehouses WHERE Address = '1030 SE Forest Ridge Ct'), 35000, 'C9'),
+    ((SELECT ProductID FROM products WHERE ProductName = 'Sun-Dried Tomatoes'), (SELECT WarehouseID FROM warehouses WHERE Address = '800 W Champain St'), 95000, 'A1'),
+    ((SELECT ProductID FROM products WHERE ProductName = 'Almond Milk'), (SELECT WarehouseID FROM warehouses WHERE Address = '800 W Champain St'), 15000, 'Q7');
 
+-- INSERT INTO storages (ProductID, WarehouseID, Quantity, Shelf)
+-- VALUES 
+--     ((SELECT ProductID FROM products WHERE ProductName = 'Chang'), (SELECT WarehouseID FROM warehouses WHERE Address = 'Grant Ave 400'), 16000, 'A7'),
+--     ((SELECT ProductID FROM products WHERE ProductName = 'Tofu'), (SELECT WarehouseID FROM warehouses WHERE Address = 'Grant Ave 400'), 12000, 'T8'),
+--     ((SELECT ProductID FROM products WHERE ProductName = 'Maxilaku'), (SELECT WarehouseID FROM warehouses WHERE Address = '1030 SE Forest Ridge Ct'), 50000, 'B5'),
+--     ((SELECT ProductID FROM products WHERE ProductName = 'Ipoh Coffee'), (SELECT WarehouseID FROM warehouses WHERE Address = '1030 SE Forest Ridge Ct'), 35000, 'C9'),
+--     ((SELECT ProductID FROM products WHERE ProductName = 'Sun-Dried Tomatoes'), (SELECT WarehouseID FROM warehouses WHERE Address = '800 W Champain St'), 95000, 'A1'),
+--     ((SELECT ProductID FROM products WHERE ProductName = 'Almond Milk'), (SELECT WarehouseID FROM warehouses WHERE Address = '800 W Champain St'), 15000, 'Q7');
 -- --------------------------------------------------
 
 -- ##################################################
@@ -42,19 +64,19 @@ VALUES (1, 'Saint Louis', 'Palm st 16', 63107, 'Saint Louis'),
 -- 	- address: 1500 Knotts St
 -- 	- postalcode: 62703
 -- --------------------------------------------------
-
+UPDATE offices SET Address = '1500 Knotts St', PostalCode = 62703 WHERE OfficeName = 'Springfield';
 -- --------------------------------------------------
 
 -- ##################################################
 -- 5 | Manager of Kansas City office has left the company and Laura Callahan will be the new manager. Do the update using subquery (tip: get the employeeid for manager column using subquery)!
 -- --------------------------------------------------
-
+UPDATE offices SET Manager = (SELECT EmployeeID FROM employees WHERE LastName = 'Callahan' AND FirstName = 'Laura') WHERE OfficeName = 'Kansas City';
 -- --------------------------------------------------
 
 -- ##################################################
 -- 6 | Double the quantity of Tofu and move the product to W8 shelf which has more space for the greater quantity in Liberty Warehouse.
 -- --------------------------------------------------
-
+UPDATE storages SET Quantity = Quantity * 2, Shelf = 'W8' WHERE Product = 'Tofu' AND WarehouseID = (SELECT WarehouseID FROM warehouses WHERE Address = 'Grant Ave 400');
 -- --------------------------------------------------
 
 -- ##################################################

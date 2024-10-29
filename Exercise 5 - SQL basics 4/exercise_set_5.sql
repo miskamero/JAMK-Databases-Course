@@ -119,7 +119,9 @@ CREATE TABLE storages (
 -- --------------------------------------------------
 
 -- ##################################################
--- 9 | Connect the storages table with products and warehouses tables. One row in storages table will tell how many units of what product is stored in which warehouse (and of course the specific location in that warehouse created earlier with shelf identifier). Use a primary key column StorageID for this table with integer data type and auto increment feature.
+-- 9 | Connect the storages table with products and warehouses tables.
+-- One row in storages table will tell how many units of what product is stored in which warehouse (and of course the specific location in that warehouse created earlier with shelf identifier).
+-- Use a primary key column StorageID for this table with integer data type and auto increment feature.
 -- --------------------------------------------------
 ALTER TABLE storages
 ADD COLUMN ProductID INT,
